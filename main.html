@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quantum Search</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --dark-gradient: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      --light-gradient: linear-gradient(to right, #fffbd5, #b20a2c);
+      --quantum-standard: linear-gradient(to right, #6dd5ed, #2193b0);
+      --quantum-inverted: linear-gradient(to right, #2193b0, #6dd5ed);
+      --button-color: #6dd5ed;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--quantum-standard);
+      animation: gradient 15s ease-in-out infinite;
+    }
+
+    @keyframes gradient {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    .company-name {
+      font-size: 36px;
+      color: white;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .input {
+      width: calc(100% - 40px);
+      height: 60px;
+      border: 2px solid white;
+      border-radius: 30px;
+      padding: 0 20px;
+      font-size: 24px;
+      outline: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: white;
+      background: transparent;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .input:focus, .input:valid {
+      color: #ff6a00;
+    }
+
+    .search-history {
+      display: none;
+      position: absolute;
+      left: 20px;
+      top: 70px;
+      background: white;
+      color: black;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s;
+      z-index: 10;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .input:focus + .search-history,
+    .input:hover + .search-history {
+      display: block;
+    }
+
+    .search-history a {
+      display: block;
+      text-decoration: none;
+      color: black;
+      padding: 5px 0;
+      cursor: pointer;
+    }
+
+    .search-history a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .button {
+      width: 60px;
+      height: 60px;
+      border: 2px solid white;
+      border-radius: 50%;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: var(--button-color);
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .button:hover {
+      transform: scale(1.1);
+    }
+
+    .button:active {
+      transform: scale(0.9);
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .theme-switcher {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .theme-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      margin: 0 10px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .dark-gradient { background: var(--dark-gradient); }
+    .light-gradient { background: var(--light-gradient); }
+    .quantum-standard { background: var(--quantum-standard); }
+    .quantum-inverted { background: var(--quantum-inverted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="company-name">Quantum Search</div>
+    <input class="input" type="text" placeholder="Search the web..." required>
+    <div class="search-history">
+      <!-- Search history will be loaded here -->
+    </div>
+    <button class="button" type="submit">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+    </button>
+  </div>
+  <div class="theme-switcher">
+    <button class="theme-button dark-gradient" onclick="changeTheme('dark-gradient')"></button>
+    <button class="theme-button light-gradient" onclick="changeTheme('light-gradient')"></button>
+    <button class="theme-button quantum-standard" onclick="changeTheme('quantum-standard')"></button>
+    <button class="theme-button quantum-inverted" onclick="changeTheme('quantum-inverted')"></button>
+  </div>
+  <script>
+    function changeTheme(themeName) {
+      document.body.style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + themeName);
+      document.querySelector('.button').style.background = getComputedStyle(document.documentElement).getPropertyValue('--' + themeName);
+    }
+
+    function addSearchToHistory(query) {
+      let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+      searchHistory.unshift(query);
+      searchHistory = searchHistory.slice(0, 3);
+      localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+      updateSearchHistoryDisplay();
+    }
+
+    function updateSearchHistoryDisplay() {
+      const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+      const searchHistoryContainer = document.querySelector('.search-history');
+      searchHistoryContainer.innerHTML = '';
+      searchHistory.forEach(function(entry) {
+        const historyEntry = document.createElement('a');
+        historyEntry.textContent = entry;
+        historyEntry.href = 'https://www.bing.com/search?q=' + encodeURIComponent(entry);
+        historyEntry.target = '_blank';
+        searchHistoryContainer.appendChild(historyEntry);
+      });
+    }
+
+    document.querySelector('.input').addEventListener('focus', function() {
+      document.querySelector('.search-history').style.display = 'block';
+    });
+
+    document.querySelector('.input').addEventListener('blur', function() {
+      setTimeout(function() {
+        document.querySelector('.search-history').style.display = 'none';
+      }, 300); // Delay to allow click on history items
+    });
+
+    document.querySelector('.button').addEventListener('click', function() {
+      const query = document.querySelector('.input').value;
+      window.open('https://www.bing.com/search?q=' + encodeURIComponent(query));
+      addSearchToHistory(query);
+    });
+
+    updateSearchHistoryDisplay();
+  </script>
+</body>
+</html>
